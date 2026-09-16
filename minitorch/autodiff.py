@@ -23,7 +23,13 @@ def central_difference(f: Any, *vals: Any, arg: int = 0, epsilon: float = 1e-6) 
         An approximation of $f'_i(x_0, \ldots, x_{n-1})$
     """
     # TODO: Implement for Task 1.1.
-    raise NotImplementedError('Need to implement for Task 1.1')
+    vals1 = list(vals)
+    vals2 = list(vals)
+
+    vals1[arg] = vals1[arg] + epsilon
+    vals2[arg] = vals2[arg] - epsilon
+
+    return (f(*vals1) - f(*vals2)) / (2.0 * epsilon)
 
 
 variable_count = 1
@@ -62,7 +68,22 @@ def topological_sort(variable: Variable) -> Iterable[Variable]:
         Non-constant Variables in topological order starting from the right.
     """
     # TODO: Implement for Task 1.4.
-    raise NotImplementedError('Need to implement for Task 1.4')
+    order = []
+    visited = set()
+
+    def visit(var):
+        if var.is_constant() or var.unique_id in visited:
+            return
+        
+        if not var.is_leaf():
+            for parent in var.parents:
+                visit(parent)
+
+        visited.add(var.unique_id)
+        order.append(var)
+
+    visit(variable)
+    return reversed(order)
 
 
 def backpropagate(variable: Variable, deriv: Any) -> None:
@@ -77,7 +98,18 @@ def backpropagate(variable: Variable, deriv: Any) -> None:
     No return. Should write to its results to the derivative values of each leaf through `accumulate_derivative`.
     """
     # TODO: Implement for Task 1.4.
-    raise NotImplementedError('Need to implement for Task 1.4')
+    ordered_vars = topological_sort(variable)
+    derivatives = {variable.unique_id: deriv}
+
+    for var in ordered_vars:
+        d_out = derivatives.get(var.unique_id, 0.0)
+
+        if var.is_leaf():
+            var.accumulate_derivative(d_out)
+        else:
+            for parent, grad in var.chain_rule(d_out):
+                if not parent.is_constant():
+                    derivatives[parent.unique_id] = derivatives.get(parent.unique_id, 0.0) + grad
 
 
 @dataclass
