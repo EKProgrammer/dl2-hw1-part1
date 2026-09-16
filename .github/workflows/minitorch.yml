@@ -22,27 +22,25 @@ jobs:
         python -m pip install --upgrade pip
         pip install flake8 pytest pep8-naming
         if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
-        if [ -f requirements.extra.txt ]; then pip install -r requirements.extra.txt; fi
-        pip install -e .
     - name: Test with pytest
       run: |
         echo "Module 0"
-        pytest tests -x -m task0_1
-        pytest tests -x -m task0_2
-        pytest tests -x -m task0_3
-        pytest tests -x -m task0_4
+        python -m pytest tests -m task0_1
+        python -m pytest tests -m task0_2
+        python -m pytest tests -m task0_3
+        python -m pytest tests -m task0_4
         echo "Module 1"
-        pytest tests -x -m task1_1
-        pytest tests -x -m task1_2
-        pytest tests -x -m task1_3
-        pytest tests -x -m task1_4
+        python -m pytest tests -m task1_1
+        python -m pytest tests -m task1_2
+        python -m pytest tests -m task1_3
+        python -m pytest tests -m task1_4
         echo "Module 2"
-        pytest tests -x -m task2_1
-        pytest tests -x -m task2_2
-        pytest tests -x -m task2_3
-        pytest tests -x -m task2_4
+        python -m pytest tests -m task2_1
+        python -m pytest tests -m task2_2
+        python -m pytest tests -m task2_3
+        python -m pytest tests -m task2_4
         echo "Module 3"
-        pytest tests -x -m task3_1
-        pytest tests -x -m task3_2
-        pytest tests -x -m task3_3
-        pytest tests -x -m task3_4
+        python -m pytest tests -m task3_1
+        python -m pytest tests -m task3_2
+        python -m pytest tests -m task3_3
+        python -m pytest tests -m task3_4
